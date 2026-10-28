@@ -1,8 +1,10 @@
 const formulario = document.getElementById("nome-pesquisa");
 const botaoShiny = document.getElementById("shiny");
 const botaoLimparHistorico = document.getElementById("limpar-historico");
+const botaoAleatorio = document.getElementById("aleatorio");
 let pokemonAtual = null;
 let historico = carregarDados() || [];
+const STAT_MAX = 200; // valor máximo de stat para o cálculo da barra de progresso(mas geralmente é ate 150)
 
 // Pesquisa pelo nome digitado
 formulario.addEventListener("submit", async function (event) {
@@ -19,10 +21,9 @@ formulario.addEventListener("submit", async function (event) {
 });
 
 // Pesquisa por um Pokémon aleatório
-formulario.addEventListener("dblclick", function (event) {
-    if (event.target.tagName === "INPUT") return;
+botaoAleatorio.addEventListener("click", function () {
     buscarPokemon(gerarNumeroAleatorio());
-})
+});
 
 // Pesquisa por um Pokémon shiny
 botaoShiny.addEventListener("click", function () {
@@ -75,10 +76,10 @@ function buscarPokemon(nome) {
                     <p class="altura">Altura: ${data.height / 10} m</p>
                     <p class="peso">Peso: ${data.weight / 10} kg</p>
                     <p class="tipo">Tipo: ${data.types.map(type => type.type.name).join(", ")}</p>
-                    <p class="hp">HP: ${data.stats.find(stat => stat.stat.name === "hp").base_stat}</p>
-                    <p class="ataque">Ataque: ${data.stats.find(stat => stat.stat.name === "attack").base_stat}</p>
-                    <p class="defesa">Defesa: ${data.stats.find(stat => stat.stat.name === "defense").base_stat}</p>
-                    <p class="velocidade">Velocidade: ${data.stats.find(stat => stat.stat.name === "speed").base_stat}</p>
+                    ${criarStat(data, "hp", "hp", "HP")}
+                    ${criarStat(data, "attack", "ataque", "Ataque")}
+                    ${criarStat(data, "defense", "defesa", "Defesa")}
+                    ${criarStat(data, "speed", "velocidade", "Velocidade")}
                 `;
           adicionarHistorico(data.name);// Adiciona o Pokémon ao histórico e salva no localStorage
           //criarItemHistorico(data.name); // Adiciona o Pokémon ao histórico momentaneamente, sem salvar no localStorage
@@ -88,6 +89,21 @@ function buscarPokemon(nome) {
             let resultado = document.getElementById("resultado");
             resultado.innerHTML = `<p class="erro">${error.message}</p>`;
         });
+}
+
+function criarStat(data, nomeApi, classe, rotulo) {
+    const valor = data.stats.find(s => s.stat.name === nomeApi).base_stat;
+    const porcentagem = Math.min((valor / STAT_MAX) * 100, 100);
+
+    return `
+        <div class="stat ${classe}">
+            <span class="stat-nome">${rotulo}</span>
+            <span class="stat-valor">${valor}</span>
+            <div class="barra">
+                <div class="barra-preenchida" style="--pct: ${porcentagem}%"></div>
+            </div>
+        </div>
+    `;
 }
 
 function criarItemHistorico(nome) {
@@ -162,7 +178,5 @@ function adicionarHistorico(nome) {
     criarItemHistorico(nome);
 }
 
-
 // ao abrir a página, mostra o que estava salvo
 historico.forEach(criarItemHistorico);
-
