@@ -9,7 +9,12 @@ body {
     min-height: 100vh;
     font-family: "Trebuchet MS", "Segoe UI", sans-serif;
     color: #222;
-    background: radial-gradient(circle at top, #ff5350 0%, #c62828 45%, #7f1010 100%);
+    background: radial-gradient(
+        circle at top,
+        color-mix(in srgb, var(--cor-tipo, #ff5350) 70%, white) 0%,
+        var(--cor-tipo, #c62828) 45%,
+        color-mix(in srgb, var(--cor-tipo, #c62828) 50%, black) 100%
+    );
     display: flex;
     flex-direction: column;
     align-items: center;
