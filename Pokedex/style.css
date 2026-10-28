@@ -24,28 +24,63 @@ body {
 /* ===== Cabeçalho ===== */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .logo {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
 }
 
+/* Logo em formato de adesivo: contorno branco + sombra */
 .logo img {
-    width: 200px;
-    max-width: 70vw;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+    display: block;
+    width: 40px;
+    max-width: 50vw;
+    height: auto;
+    cursor: pointer;
+    filter:
+        drop-shadow(3px 0 0 var(--cor-tipo, #fff))
+        drop-shadow(-3px 0 0 var(--cor-tipo, #fff))
+        drop-shadow(0 3px 0 var(--cor-tipo, #fff))
+        drop-shadow(0 -3px 0 var(--cor-tipo, #fff))
+        drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
+    animation: flutuar 3s ease-in-out infinite;
+    transition: transform 0.2s;
+}
+
+.logo img:hover {
+    animation: balancar 0.5s ease-in-out;
+    transform: scale(1.08);
 }
 
 .logo h1 {
     color: #fff;
-    font-size: 1.4rem;
-    letter-spacing: 6px;
+    font-size: 1.8rem;
+    letter-spacing: 8px;
     text-transform: uppercase;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow:
+        0 2px 0 rgba(0, 0, 0, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Animações da logo */
+@keyframes flutuar {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+
+@keyframes balancar {
+    0%, 100% { transform: rotate(0) scale(1.08); }
+    25%      { transform: rotate(-6deg) scale(1.08); }
+    75%      { transform: rotate(6deg) scale(1.08); }
+}
+
+/* Respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+    .logo img { animation: none; }
 }
 
 /* ===== Formulário de pesquisa ===== */
@@ -166,6 +201,13 @@ header {
         radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.8), transparent 55%),
         linear-gradient(135deg, #bde8ff 0%, #e6f7ff 50%, #ffe9a8 100%);
     box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.25);
+    transition: scale 0.25s ease;
+    cursor: pointer;
+}
+
+#resultado img:hover {
+    scale:1.25;
+    z-index: 2;
 }
 
 /* Tipo (selo) */
@@ -247,6 +289,74 @@ header {
         0 0 0 3px #b8860b,
         0 22px 40px rgba(0, 0, 0, 0.55);
 }
+
+/* ===== BOTÃO SHINY ===== */
+#shiny {
+    position: relative;
+    overflow: hidden;
+    margin-top: 24px;
+    padding: 12px 26px;
+    border: 3px solid #fff;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffe066 0%, #ffcb05 50%, #f5a700 100%);
+    color: #2a4b9b;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow:
+        0 4px 0 #b8860b,
+        0 8px 16px rgba(0, 0, 0, 0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+/* Brilho que passa pelo botão ao passar o mouse */
+#shiny::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.7),
+        transparent
+    );
+    transform: skewX(-20deg);
+}
+
+#shiny:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 7px 0 #b8860b,
+        0 12px 20px rgba(0, 0, 0, 0.45),
+        0 0 14px rgba(255, 215, 0, 0.8);
+}
+
+#shiny:hover::after {
+    left: 130%;
+    transition: left 0.6s ease;
+}
+
+/* Efeito de apertar */
+#shiny:active {
+    transform: translateY(2px);
+    box-shadow:
+        0 1px 0 #b8860b,
+        0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+#shiny:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+}
+
+body:not(:has(#resultado h2)) #shiny {
+    display: none;
+ } /* deixa o botão invisível enquanto não houver nenhum Pokémon pesquisado */
 
 /* ===== HISTÓRICO DE PESQUISAS ===== */
 #historico {
@@ -332,4 +442,24 @@ header {
 #historico-container::-webkit-scrollbar-thumb {
     background: #d4a017;
     border-radius: 999px;
+}
+
+#limpar-historico {
+    display: block;
+    margin: 0 auto 12px;
+    padding: 6px 16px;
+    border: 2px solid #c62828;
+    border-radius: 999px;
+    background: #fff;
+    color: #c62828;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+#limpar-historico:hover {
+    background: #c62828;
+    color: #fff;
 }

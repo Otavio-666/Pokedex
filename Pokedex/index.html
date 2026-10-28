@@ -6,13 +6,14 @@
     <title>Pokedex</title>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Logo.png">
 
 </head>
 <body>
 
     <header>
         <div class="logo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png" alt="Logo do Pokémon">
+            <img src="Logo.png" alt="Logo do Pokémon">
         <h1>Pokedex</h1>
         </div>
     </header>
@@ -24,10 +25,13 @@
 
     <section id="resultado">
         <!-- Resultado da pesquisa será exibido aqui -->
-    </section>
 
+    </section>
+    <button id="shiny">Pesquisar Pokémon Shiny</button>
+    
     <section id="historico">
         <h2>Histórico de Pesquisas</h2>
+        <button id="limpar-historico">Limpar Histórico</button>
         <div id="historico-container">
             <ul id="lista-historico">
                 <!-- Histórico de pesquisas será exibido aqui -->
