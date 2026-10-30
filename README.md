@@ -29,4 +29,6 @@
 
 #
 
+<h3>Link da Pokedex:</h3> https://otavio-666.github.io/Pokedex/
 
+#
